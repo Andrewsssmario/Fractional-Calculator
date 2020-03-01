@@ -1,0 +1,295 @@
+import math
+def gcd(m,n):
+    olddm=m
+    olddn=n
+    while m%n != 0:
+        oldm = m
+        oldn = n
+
+        m = oldn
+        n = oldm%oldn
+    return Fraction(int(olddm/n),int(olddn/n))
+class Fraction:
+    def __init__(self,top,bottom):
+        self.top=top
+        self.bottom=bottom
+    def __str__(self):
+        return str(self.top) + "/" +str(self.bottom)
+    def __add__(self,frac2):
+        new=self.top*frac2.bottom+frac2.top*self.bottom
+        new2=self.bottom*frac2.bottom
+        common=gcd(new,new2)
+        return common
+   
+  
+    def __gt__(self,frac2):
+        if self.top/self.bottom>frac2.top/frac2.bottom:
+            return True
+        else:
+            return False
+    def __ge__(self,frac2):
+        if self.top/self.bottom>=frac2.top/frac2.bottom:
+            return True
+        else:
+            return False
+    def __lt__(self,frac2):
+        if self.top/self.bottom<frac2.top/frac2.bottom:
+            return True
+        else:
+            return False
+    def __le__(self,frac2):
+        if self.top/self.bottom<=frac2.top/frac2.bottom:
+            return True
+        else:
+            return False
+   
+   
+    def __subtract__(self,frac2):
+        new=self.top*frac2.bottom-frac2.top*self.bottom
+        new2=self.bottom*frac2.bottom
+        common=gcd(new,new2)
+        return common
+    def __multiply__(self, frac2):
+        new=self.top*frac2.top
+        new2=self.bottom*frac2.bottom
+        common=gcd(new,new2)
+        return common
+    def __divide__(self,frac2):
+        new=self.top*frac2.bottom
+        new2=self.bottom*frac2.top
+        common=gcd(new,new2)
+        return common
+    def __simplify__(self):
+        common=gcd(self.top,self.bottom)
+        return common
+def convert(x):
+    x=str(x)
+    counter=0
+    bottom=1
+    for a in range(len(x)):
+        if x[a]==".":
+            counter=len(x[a+1:])
+    while counter>0:
+        counter=counter-1
+        bottom=bottom*10
+    
+    xtop=int(float(x)*bottom)
+    
+ 
+    return xtop
+def calculator():
+    
+    Starting_Action=True
+    Boolean=True
+    while Boolean==True:
+        Starting_Action=input("What would you like to do(Options:Calculate,Exit)?")
+        if Starting_Action=="Exit":
+            return "Goodbye, hope to see you soon!"
+            Boolean=False
+        
+        
+        
+    
+        if Starting_Action=="Calculate":
+            numberValue=input("Enter a number, or fraction to start(comma between numbers): ")
+            for a in range(len(numberValue)):
+                if numberValue[a]==",":
+                    numberValue=Fraction(int(numberValue[0:a]), int(numberValue[a+1:]))
+                    break
+                elif numberValue[a]==".":
+                    numberValue=float(numberValue)
+                    break
+                else:
+                    continue
+            if numberValue=="":
+                print("Empty Value Error")
+                continue
+            if type(numberValue)==type("has") and numberValue.isdigit()==True and type(numberValue)!=type(Fraction(1,2)):
+                numberValue=int(numberValue)
+                
+            
+            
+            
+            Action=input("Now, please enter a operation(Choosing from +,-,/,*,power,sqroot,(lessthan,lessequal,morethan,moreequal,equal,notequal) (returns Boolean),(results in a floating point number)")
+            secondnumber=input("Finally, enter another number,fraction,or power(power will result in the first number being powered to this number), if sqroot chosen, this number is invalid:")
+            for a in range(len(secondnumber)):
+                if secondnumber[a]==",":
+                    secondnumber=Fraction(int(secondnumber[0:a]), int(secondnumber[a+1:]))
+                    break
+                elif secondnumber[a]==".":
+                    secondnumber=float(secondnumber)
+                    break
+                else:
+                    continue
+            if type(secondnumber)==type("stru") and secondnumber.isdigit()==True:
+                secondnumber=int(secondnumber)
+            if type(numberValue)==type("stru") and numberValue.isdigit()==True:
+                numberValue=int(numberValue)
+            if type(numberValue)!=type(1) and type(numberValue)!=type(1.0) and type(numberValue)!=type(Fraction(1,2)):
+                print("Invalid Type Used for first number")
+                continue
+            if type(secondnumber)!=type(1) and type(secondnumber)!=type(1.0) and type(secondnumber)!=type(Fraction(1,2)) and Action!="sqroot":
+                print("Invalid Type Used for second number")
+                continue
+            if type(numberValue)==type(Fraction(1,2)) and numberValue.bottom==0:
+                print("Fraction cannot have 0 as denominator")
+                continue
+            if type(secondnumber)==type(Fraction(1,2)) and secondnumber.bottom==0:
+                print("Fraction cannot have 0 as denominator")
+                continue
+             
+             
+             
+             
+             
+             
+            if (type(secondnumber)==type(1) or type(secondnumber)==type(1.0))and type(numberValue)==type(Fraction(1,2)) and Action!="power":
+                bottom=1
+                secondnumbern=convert(secondnumber)
+                while secondnumbern/bottom!=secondnumber:
+                    bottom=bottom*10
+                secondnumber=Fraction(secondnumbern,bottom)
+            if (type(numberValue)==type(1) or type(numberValue)==type(1.0))and type(secondnumber)==type(Fraction(1,2)):
+                bottom=1
+                numberValuen=convert(numberValue)
+                while numberValuen/bottom!=numberValue:
+                    bottom=bottom*10
+                numberValue=Fraction(numberValuen,bottom)
+                
+                
+            
+            if Action=="+":
+                if type(numberValue)==type(Fraction(1,2)):
+                    result=numberValue.__add__(secondnumber)
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                else:
+                    result=numberValue+secondnumber
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+            elif Action=="-":
+                if type(numberValue)==type(Fraction(1,2)):
+                    result=numberValue.__subtract__(secondnumber)
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                else:
+                    result=numberValue-secondnumber
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+            elif Action=="*":
+                if type(numberValue)==type(Fraction(1,2)):
+                    result=numberValue.__multiply__(secondnumber)
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                else:
+                    result=numberValue*secondnumber
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+            elif Action=="/":
+                if type(numberValue)==type(Fraction(1,2)):
+                    result=numberValue.__divide__(secondnumber)
+                    if result.bottom==1:
+                            result=result.top
+                    print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                else:
+                    if type(numberValue)==type(1) and type(secondnumber)==type(1):
+                        result=Fraction(numberValue,secondnumber)
+                        result=result.__simplify__()
+                        if result.bottom==1:
+                            result=result.top
+                        print(result)
+                        
+                        Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                        Boolean=True
+                    else:
+                        result=numberValue/secondnumber
+                        print(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+            elif Action=="power":
+                
+                if type(numberValue)==type(Fraction(1,2)) and (type(secondnumber)==type(1) or type(secondnumber)==type(1.0)):
+                    if type(secondnumber)==type(1.0):
+                        secondnumber=str(secondnumber)
+                        for a in range(len(secondnumber)):
+                            if secondnumber[a]==".":
+                                if secondnumber[a+1:] =="0":
+                                    secondnumber=int(secondnumber)
+                                    original=numberValue 
+                                    while secondnumber>1:
+                                        secondnumber=secondnumber-1
+                                        numberValue=numberValue.__multiply__(original)
+                                        result=numberValue
+                                        if result.bottom==1:
+                                            result=result.top
+                                        Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                                        Boolean=True
+                                else:
+                                    fractionnumber=numberValue.top/numberValue.bottom
+                                    result=fractionnumber**secondnumber
+                                    if int(result)*1.0==result*1.0:
+                                        result=int(result)
+                                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                                    Boolean=True
+                                    
+                                    
+                                    
+                   
+                elif (type(numberValue)==type(1) or type(numberValue)==type(1.0))and (type(secondnumber)==type(1) or type(secondnumber)==type(1.0)) :
+                    result=numberValue**secondnumber
+                    if int(result)*1.0==result*1.0:
+                        result=int(result)
+                    
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                
+                else:
+                    print("Wrong types used for power")
+                    Boolean=True
+                    
+            elif Action=="sqroot":
+                if type(numberValue)==type(Fraction(1,2)):
+                    division=numberValue.top/numberValue.bottom
+                    result=math.sqrt(division)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+                else:
+                    result=math.sqrt(numberValue)
+                    if int(result)*1.0==result*1.0:
+                        result=int(result)
+                    Yes=input("Result is "+str(result)+" Would you like to go again? If no, print Exit on the next screen")
+                    Boolean=True
+            elif Action=="lessthan" or Action=="morethan" or Action=="moreequal" or Action=="lessequal" or Action=="equal" or Action=="notequal":
+                return True#HEJFBFHBHJBSFBHJDBJ
+            else:
+                print("Function not found")
+                Boolean=True
+            
+                    
+                    
+            
+print(calculator())
+
+
+
